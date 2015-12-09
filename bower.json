@@ -1,0 +1,23 @@
+{
+  "name": "vader",
+  "description": "",
+  "main": "index.coffee",
+  "authors": [
+    "Mats Rörbecker <mats@rorbecker.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4"
+  }
+}

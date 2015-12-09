@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'droid_sansregular';
+  src: url('../fonts/DroidSans-webfont.eot');
+  src: url('../fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/DroidSans-webfont.woff') format('woff'),
+       url('../fonts/DroidSans-webfont.ttf') format('truetype'),
+       url('../fonts/DroidSans-webfont.svg#droid_sansregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'droid_sansbold';
+  src: url('../fonts/DroidSans-Bold-webfont.eot');
+  src: url('../fonts/DroidSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/DroidSans-Bold-webfont.woff') format('woff'),
+       url('../fonts/DroidSans-Bold-webfont.ttf') format('truetype'),
+       url('../fonts/DroidSans-Bold-webfont.svg#droid_sansbold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1, h2 {
+  font-family: droid_sansbold, Arial, sans-serif;
+}
+
+p, a, label, input, .ui-autocomplete {
+  font-family: droid_sansregular, Arial, sans-serif;
+}
+
+h1, h2, p, a, label, input, .ui-autocomplete {
+  color: #333;
+}
+
+.ui-autocomplete {
+  font-size: 1em;
+}
+
+form {
+  margin-top: 20px;
+}
+
+#container {  
+  max-width: 640px;
+  margin: auto;
+}

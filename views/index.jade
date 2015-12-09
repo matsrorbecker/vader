@@ -1,0 +1,22 @@
+doctype html
+html(lang='sv')
+  head
+    meta(charset='utf-8')
+    title ---=== EN LITEN ROBOT ===---
+    link(rel='stylesheet' href='js/lib/jquery-ui/themes/smoothness/jquery-ui.min.css')
+    link(rel='stylesheet' href='css/style.css')
+  body
+    div(id='container')
+      form(action='/' method='post')
+        label(for='municipality') Jag vill läsa om väderprognosen för: 
+        input(type='text' name='municipality' id='municipality' value='Ange en kommun' size='14')
+        input(type='submit' value='Skriv text')
+      
+      if error
+        p #{error}
+      if municipality
+        h1 Väderprognos för #{municipality}
+
+    script(src='js/lib/jquery/dist/jquery.min.js')
+    script(src='js/lib/jquery-ui//jquery-ui.min.js')
+    script(src='js/scripts.js')
