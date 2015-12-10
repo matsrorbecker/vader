@@ -18,27 +18,47 @@ html(lang='sv')
         p #{error}
       if municipality
         h1 Väderprognos för #{municipality}
-      if todaysForecast
         if todaysForecast.morning
-          h2 Morgonens temperatur
-          p Temperature: #{todaysForecast.morning.temperature}
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.morning.cloudCover)
+          - var windSpeedWord = getWordForWindSpeed(todaysForecast.morning.windSpeed)
+          - var precipitationWord = getWordForPrecipitation(todaysForecast.morning.precipitationCategories)
+          p.
+            På morgonen får vi #{cloudCoverWord} väder, #{precipitationWord} #{windSpeedWord} och 
+            en temperatur på omkring #{todaysForecast.morning.temperature} grader.
         if todaysForecast.forenoon
-          h2 Förmiddagens temperatur
-          p Temperature: #{todaysForecast.forenoon.temperature}
-        if todaysForecast.afternnon
-          h2 Eftermiddagens temperatur
-          p Temperature: #{todaysForecast.afternoon.temperature}
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.forenoon.cloudCover)
+          - var windSpeedWord = getWordForWindSpeed(todaysForecast.forenoon.windSpeed)
+          - var precipitationWord = getWordForPrecipitation(todaysForecast.forenoon.precipitationCategories)
+          p.
+            Under förmiddagen blir det #{cloudCoverWord} väder, #{precipitationWord} #{windSpeedWord} och 
+            temperaturen blir cirka #{todaysForecast.forenoon.temperature} grader. 
+        if todaysForecast.afternoon
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.afternoon.cloudCover)
+          - var windSpeedWord = getWordForWindSpeed(todaysForecast.afternoon.windSpeed)
+          - var precipitationWord = getWordForPrecipitation(todaysForecast.afternoon.precipitationCategories)
+          p.
+            På eftermiddagen väntas #{cloudCoverWord} väder, #{precipitationWord} #{windSpeedWord} och 
+            en temperatur på omkring #{todaysForecast.forenoon.temperature} grader.
+
         if todaysForecast.evening
-          h2 Kvällens temperatur
-          p Temperature: #{todaysForecast.evening.temperature}
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.evening.cloudCover)
+          - var windSpeedWord = getWordForWindSpeed(todaysForecast.evening.windSpeed)
+          - var precipitationWord = getWordForPrecipitation(todaysForecast.evening.precipitationCategories)
+          p.
+            Till kvällen får vi #{cloudCoverWord} väder, #{precipitationWord} #{windSpeedWord} och en temperatur 
+            på cirka  #{todaysForecast.evening.temperature} grader.
         if todaysForecast.night
-          h2 Nattens temperatur
-          p Temperature: #{todaysForecast.night.temperature}
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.night.cloudCover)
+          - var windSpeedWord = getWordForWindSpeed(todaysForecast.night.windSpeed)
+          - var precipitationWord = getWordForPrecipitation(todaysForecast.night.precipitationCategories)
+          p.
+            Under natten väntas #{cloudCoverWord} väder, #{precipitationWord} #{windSpeedWord} och temperaturen 
+            väntas ligga på cirka #{todaysForecast.night.temperature} grader.
+        p Källa: SMHI
+  
 
+    svg(id="visualisation" width="600" height="300")
     button(onclick='getWeather()') TJOOO
-
-    svg(id="visualisation" width="1000" height="500")
-
     //script(src='../node_modules/d3/src/d3.min.js')
     script(src='http://d3js.org/d3.v3.min.js')
     script(src='js/lib/jquery/dist/jquery.min.js')

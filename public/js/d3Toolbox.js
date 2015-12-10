@@ -74,18 +74,19 @@ function getWeather(){
   jQuery.ajax({
     type: 'POST',
     url: '/weather',
-    data: {city:'Norrköping'},
+    data: {city:'Stockholm'},
     success: handleResponse
   });
 }
 
 function handleResponse(data){
+
   lineData= [{
     x: 1,
-    y: 0
+    y: 5
   }, {
     x: 2,
-    y: data.forenoon.temperature
+    y: 6
   }, {
     x: 3,
     y: data.afternoon.temperature

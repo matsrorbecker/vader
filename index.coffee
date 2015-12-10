@@ -12,6 +12,10 @@ app.set 'views', path.join __dirname, 'views'
 app.use express.static path.join __dirname, 'public'
 app.use bodyParser.urlencoded { extended: false }
 
+app.locals.getWordForCloudCover =       require('./lib/words').getWordForCloudCover
+app.locals.getWordForWindSpeed =        require('./lib/words').getWordForWindSpeed
+app.locals.getWordForPrecipitation =    require('./lib/words').getWordForPrecipitation
+
 config = JSON.parse fs.readFileSync('./config.json', 'utf8')
 municipalityCodes = JSON.parse fs.readFileSync('./data/municipalityCodes.json', 'utf8')
 locationFinder = new LocationFinder(config.apiKey)
@@ -31,7 +35,6 @@ app.post '/', (req, res) ->
             forecastFetcher.getForecast location, (forecast) ->
                 currentDate = new Date()
                 todaysForecast = forecastFetcher.parseForecasts(forecast,currentDate)
-                console.log 'Forecast Today: '+JSON.stringify(todaysForecast)
                 res.render 'index', { 
                     municipality: req.body.municipality 
                     todaysForecast: todaysForecast
