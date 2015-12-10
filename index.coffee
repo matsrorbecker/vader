@@ -33,7 +33,6 @@ app.post '/', (req, res) ->
                 console.log forecast
                 console.log ' --- '
                 console.log 'MORNING FORECAST:'
-                console.log JSON.stringify(todaysForecast.morning)
                 res.render 'index', { 
                     municipality: req.body.municipality 
                     todaysForecast: todaysForecast

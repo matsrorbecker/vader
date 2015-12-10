@@ -17,10 +17,11 @@ html(lang='sv')
       if municipality
         h1 Väderprognos för #{municipality}
       if todaysForecast
-        | THERE IS DATA
+        
         if todaysForecast.morning.length>0
           for forecast in todaysForecast.morning
-            h3 Time #{JSON.stringify(forecast)}
+            h3 Time #{forecast.date}
+            span Temperature: #{forecast.temperature.value}
 
     script(src='js/lib/jquery/dist/jquery.min.js')
     script(src='js/lib/jquery-ui//jquery-ui.min.js')

@@ -48,7 +48,18 @@ module.exports = class ForecastFetcher
         for forecast in forecasts
             date = new Date(forecast.validTime)
             if morningHours.indexOf(date.getHours())>=0 and currentDate.getDate() == date.getDate()
-                morningForecast.push(forecast)
+                console.log 'temperature: '+JSON.stringify(forecast)
+                forecastObject = {
+                    date:date,
+                }
+                for parameter in forecast.parameters
+                    if parameter.name=='t'
+                        forecastObject.temperature={
+                            value:parameter.values[0],
+                            unit:parameter.unit
+                    else if 
+  
+                morningForecast.push(forecastObject)
         morningForecast
 
 
