@@ -16,6 +16,7 @@ config = JSON.parse fs.readFileSync('./config.json', 'utf8')
 municipalityCodes = JSON.parse fs.readFileSync('./data/municipalityCodes.json', 'utf8')
 locationFinder = new LocationFinder(config.apiKey)
 forecastFetcher = new ForecastFetcher()
+todaysForecast = {}
 
 app.get '/', (req, res) ->
     res.render 'index', {}
@@ -27,7 +28,12 @@ app.post '/', (req, res) ->
     if code
         locationFinder.find code, name, (location) ->
             forecastFetcher.getForecast location, (forecast) ->
+                currentDate = new Date()
+                todaysForecast.morning = forecastFetcher.getMorningForecast(forecast,currentDate)
                 console.log forecast
+                console.log ' --- '
+                console.log 'MORNING FORECAST:'
+                console.log JSON.stringify(todaysForecast.morning)
         res.render 'index', { municipality: req.body.municipality }
     else
         res.render 'index', { error: "Det finns ingen kommun som heter #{req.body.municipality}." }

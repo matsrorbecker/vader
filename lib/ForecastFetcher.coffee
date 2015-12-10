@@ -31,7 +31,7 @@ module.exports = class ForecastFetcher
         @urlArray[LAT_POS] = location.lat.toFixed(MAX_DECIMALS)
         urlString = @urlArray.join '/'
         
-        request urlString, (error, response, body) ->
+        request urlString, (error, response, body) =>
             if not error and response.statusCode == 200
                 forecast = JSON.parse body
                 # Lägg in felhantering här...
@@ -40,3 +40,17 @@ module.exports = class ForecastFetcher
                 callback { error: "Ett fel uppstod: #{error.message}"}
             else
                 callback { error: "Servern svarade med kod #{response.statusCode.toString()}."}
+
+    getMorningForecast:(forecastObj,currentDate)=>
+        morningHours = [5,6,7,8,9]
+        morningForecast = []
+        forecasts = forecastObj.timeseries
+        for forecast in forecasts
+            date = new Date(forecast.validTime)
+            if morningHours.indexOf(date.getHours())>=0
+                morningForecast.push(forecast)
+
+    
+
+
+
