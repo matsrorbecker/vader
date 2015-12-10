@@ -109,21 +109,24 @@ module.exports = class ForecastFetcher
 
     getPrognosis:(forecastData)=>
         temperature=[]
-        windspeed=[]
+        windSpeed=[]
         cloudCover=[]
         precipitation=[]
+        precipitationCategories=[]
         prognosis={}
         
         for dataObject in forecastData
             temperature.push(dataObject.temperature.value)
-            windspeed.push(dataObject.windSpeed.value)
+            windSpeed.push(dataObject.windSpeed.value)
             cloudCover.push(dataObject.cloudCover.value)
             precipitation.push(dataObject.precipitationMean.value)
+            precipitationCategories.push(dataObject.precipitationCategory.value)
 
         prognosis.temperature = Math.round(@getMeanValueFromArray(temperature)) if temperature.length>0
-        prognosis.windspeed = @getMeanValueFromArray(windspeed) if windspeed.length>0
+        prognosis.windSpeed = @getMeanValueFromArray(windSpeed) if windSpeed.length>0
         prognosis.cloudCover = @getMeanValueFromArray(cloudCover) if cloudCover.length>0
-        prognosis.precipitation = @getMeanValueFromArray(precipitation) if precipitation.length>0    
+        prognosis.precipitation = @getMeanValueFromArray(precipitation) if precipitation.length>0
+        prognosis.precipitationCategories = precipitationCategories if precipitationCategories.length>0
         if prognosis.temperature
             return prognosis
         else
@@ -137,6 +140,5 @@ module.exports = class ForecastFetcher
             return values[half]
         else
             return (values[half-1] + values[half]) / 2.0
-
 
 
