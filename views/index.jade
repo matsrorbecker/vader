@@ -16,10 +16,11 @@ html(lang='sv')
         p #{error}
       if municipality
         h1 Väderprognos för #{municipality}
-
-      if todaysForecast.morning.lengt>0
-        for forecast in todaysForecast.morning
-          h3 Time #{forecast.validTime}
+      if todaysForecast
+        | THERE IS DATA
+        if todaysForecast.morning.length>0
+          for forecast in todaysForecast.morning
+            h3 Time #{JSON.stringify(forecast)}
 
     script(src='js/lib/jquery/dist/jquery.min.js')
     script(src='js/lib/jquery-ui//jquery-ui.min.js')

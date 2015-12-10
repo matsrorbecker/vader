@@ -34,7 +34,10 @@ app.post '/', (req, res) ->
                 console.log ' --- '
                 console.log 'MORNING FORECAST:'
                 console.log JSON.stringify(todaysForecast.morning)
-        res.render 'index', { municipality: req.body.municipality }
+                res.render 'index', { 
+                    municipality: req.body.municipality 
+                    todaysForecast: todaysForecast
+                }
     else
         res.render 'index', { error: "Det finns ingen kommun som heter #{req.body.municipality}." }
 

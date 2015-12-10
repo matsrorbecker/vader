@@ -49,6 +49,7 @@ module.exports = class ForecastFetcher
             date = new Date(forecast.validTime)
             if morningHours.indexOf(date.getHours())>=0 and currentDate.getDate() == date.getDate()
                 morningForecast.push(forecast)
+        morningForecast
 
 
 
