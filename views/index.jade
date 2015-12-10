@@ -5,24 +5,44 @@ html(lang='sv')
     title ---=== EN LITEN ROBOT ===---
     link(rel='stylesheet' href='js/lib/jquery-ui/themes/smoothness/jquery-ui.min.css')
     link(rel='stylesheet' href='css/style.css')
+    link(rel='stylesheet' href='css/graphsStyling.css')
   body
     div(id='container')
       form(action='/' method='post')
         label(for='municipality') Jag vill läsa om väderprognosen för: 
         input(type='text' name='municipality' id='municipality' value='Ange en kommun' size='14')
         input(type='submit' value='Skriv text')
+
       
       if error
         p #{error}
       if municipality
         h1 Väderprognos för #{municipality}
       if todaysForecast
-        
-        if todaysForecast.morning.length>0
-          for forecast in todaysForecast.morning
-            h3 Time #{forecast.date}
-            span Temperature: #{forecast.temperature.value}
+        if todaysForecast.morning
+          h2 Morgonens temperatur
+          p Temperature: #{todaysForecast.morning.temperature}
+        if todaysForecast.forenoon
+          h2 Förmiddagens temperatur
+          p Temperature: #{todaysForecast.forenoon.temperature}
+        if todaysForecast.afternnon
+          h2 Eftermiddagens temperatur
+          p Temperature: #{todaysForecast.afternoon.temperature}
+        if todaysForecast.evening
+          h2 Kvällens temperatur
+          p Temperature: #{todaysForecast.evening.temperature}
+        if todaysForecast.night
+          h2 Nattens temperatur
+          p Temperature: #{todaysForecast.night.temperature}
 
+    button(onclick='getWeather()') TJOOO
+
+    svg(id="visualisation" width="1000" height="500")
+
+    //script(src='../node_modules/d3/src/d3.min.js')
+    script(src='http://d3js.org/d3.v3.min.js')
     script(src='js/lib/jquery/dist/jquery.min.js')
     script(src='js/lib/jquery-ui//jquery-ui.min.js')
     script(src='js/scripts.js')
+    script(src='js/d3Toolbox.js')
+

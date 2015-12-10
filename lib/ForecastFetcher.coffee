@@ -120,7 +120,7 @@ module.exports = class ForecastFetcher
             cloudCover.push(dataObject.cloudCover.value)
             precipitation.push(dataObject.precipitationMean.value)
 
-        prognosis.temperature = @getMeanValueFromArray(temperature) if temperature.length>0
+        prognosis.temperature = Math.round(@getMeanValueFromArray(temperature)) if temperature.length>0
         prognosis.windspeed = @getMeanValueFromArray(windspeed) if windspeed.length>0
         prognosis.cloudCover = @getMeanValueFromArray(cloudCover) if cloudCover.length>0
         prognosis.precipitation = @getMeanValueFromArray(precipitation) if precipitation.length>0    

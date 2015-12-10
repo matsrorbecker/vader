@@ -19,13 +19,13 @@ forecastFetcher = new ForecastFetcher()
 
 todaysForecast = {}
 
+
 app.get '/', (req, res) ->
     res.render 'index', {}
 
 app.post '/', (req, res) ->
     name = req.body.municipality.toLowerCase().trim()
     code = municipalityCodes[name]
-    
     if code
         locationFinder.find code, name, (location) ->
             forecastFetcher.getForecast location, (forecast) ->
@@ -39,4 +39,18 @@ app.post '/', (req, res) ->
     else
         res.render 'index', { error: "Det finns ingen kommun som heter #{req.body.municipality}." }
 
+app.post '/weather', (req, res) ->
+    name = req.body.city.toLowerCase().trim()
+    code = municipalityCodes[name]
+    if code
+        locationFinder.find code, name, (location) ->
+            forecastFetcher.getForecast location, (forecast) ->
+                currentDate = new Date()
+                todaysForecast = forecastFetcher.parseForecasts(forecast,currentDate)
+                console.log("ANSWERING WITH : "+JSON.stringify(todaysForecast))
+                res.send(todaysForecast)
+    else
+        res.send('todaysForecast')
+
 app.listen process.env.PORT or 3000
+
