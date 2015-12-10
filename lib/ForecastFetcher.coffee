@@ -10,6 +10,12 @@ module.exports = class ForecastFetcher
     LAT_POS         = 11
     MAX_DECIMALS    = 6
     
+    morningHours = [5,6,7,8,9]
+    foreNoonHours = [10,11,12]
+    afterNoonHours = [13,14,15,16,17,18]
+    eveningHours = [19,20,21,22]
+    nightHours = [23,24,0,1,2,3,4]
+
     constructor: () ->
         @urlArray = []
         @urlArray.push ENTRY_POINT
@@ -41,29 +47,96 @@ module.exports = class ForecastFetcher
             else
                 callback { error: "Servern svarade med kod #{response.statusCode.toString()}."}
 
-    getMorningForecast:(forecastObj,currentDate)=>
-        morningHours = [5,6,7,8,9]
-        morningForecast = []
-        forecasts = forecastObj.timeSeries
-        for forecast in forecasts
+    parseForecasts:(forecastData,currentDate)=>
+        morningMeasurements = @getForecasts(forecastData,morningHours,currentDate)
+        forenoonMeasurements = @getForecasts(forecastData,foreNoonHours,currentDate)
+        afternoonMeasurements = @getForecasts(forecastData,afterNoonHours,currentDate)
+        eveningMeasurements = @getForecasts(forecastData,eveningHours,currentDate)
+        nightMeasurements = @getForecasts(forecastData,nightHours,currentDate)
+
+        prognosis = {
+            morning : @getPrognosis(morningMeasurements)
+            forenoon: @getPrognosis(forenoonMeasurements)
+            afternoon: @getPrognosis(afternoonMeasurements)
+            evening: @getPrognosis(eveningMeasurements)
+            night: @getPrognosis(nightMeasurements)
+        }
+        console.log 'Constructed Prognosis: '+JSON.stringify(prognosis)
+        prognosis
+
+    getForecasts:(forecastObj,hours,currentDate)=>
+        forecasts = []
+        for forecast in forecastObj.timeSeries
             date = new Date(forecast.validTime)
-            if morningHours.indexOf(date.getHours())>=0 and currentDate.getDate() == date.getDate()
+            if hours.indexOf(date.getHours())>=0 and currentDate.getDate() == date.getDate()
                 console.log 'temperature: '+JSON.stringify(forecast)
                 forecastObject = {
                     date:date,
                 }
                 for parameter in forecast.parameters
-                    if parameter.name=='t'
-                        forecastObject.temperature={
-                            value:parameter.values[0],
-                            unit:parameter.unit
-                    else if 
+                    switch parameter.name
+                        when 't' 
+                            forecastObject.temperature={
+                                value:parameter.values[0]
+                                unit:parameter.unit
+                            }
+                        when 'wd'
+                            forecastObject.windDirection={
+                                value:parameter.values[0]
+                                unit:parameter.unit
+                            }
+                        when 'ws'
+                            forecastObject.windSpeed={
+                                value:parameter.values[0]
+                                unit:parameter.unit
+                            }
+                        when 'tcc_mean'
+                            forecastObject.cloudCover={
+                                value:parameter.values[0]
+                                unit:parameter.unit
+                            }
+                        when 'pmean'
+                            forecastObject.precipitationMean={
+                                value:parameter.values[0]
+                                unit:parameter.unit
+                            }
+                        when 'pcat'
+                            forecastObject.precipitationCategory={
+                                value:parameter.values[0]
+                                unit:parameter.unit
+                            }
   
-                morningForecast.push(forecastObject)
-        morningForecast
+                forecasts.push(forecastObject)
+        forecasts
 
+    getPrognosis:(forecastData)=>
+        temperature=[]
+        windspeed=[]
+        cloudCover=[]
+        precipitation=[]
+        prognosis={}
+        
+        for dataObject in forecastData
+            temperature.push(dataObject.temperature.value)
+            windspeed.push(dataObject.windSpeed.value)
+            cloudCover.push(dataObject.cloudCover.value)
+            precipitation.push(dataObject.precipitationMean.value)
 
+        prognosis.temperature = @getMeanValueFromArray(temperature)
+        prognosis.windspeed = @getMeanValueFromArray(windspeed)
+        prognosis.cloudCover = @getMeanValueFromArray(cloudCover)
+        prognosis.precipitation = @getMeanValueFromArray(precipitation)
+        prognosis
 
+    getMeanValueFromArray:(values)=>
+        values.sort( (a,b)-> return a - b )
+
+        half = Math.floor(values.length/2)
+
+        if(values.length % 2)
+            return values[half]
+        else
+            return (values[half-1] + values[half]) / 2.0
 
 
 

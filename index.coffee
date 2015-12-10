@@ -16,6 +16,7 @@ config = JSON.parse fs.readFileSync('./config.json', 'utf8')
 municipalityCodes = JSON.parse fs.readFileSync('./data/municipalityCodes.json', 'utf8')
 locationFinder = new LocationFinder(config.apiKey)
 forecastFetcher = new ForecastFetcher()
+
 todaysForecast = {}
 
 app.get '/', (req, res) ->
@@ -29,7 +30,7 @@ app.post '/', (req, res) ->
         locationFinder.find code, name, (location) ->
             forecastFetcher.getForecast location, (forecast) ->
                 currentDate = new Date()
-                todaysForecast.morning = forecastFetcher.getMorningForecast(forecast,currentDate)
+                todaysForecast.morning = forecastFetcher.parseForecasts(forecast,currentDate)
                 console.log forecast
                 console.log ' --- '
                 console.log 'MORNING FORECAST:'
