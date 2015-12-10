@@ -30,10 +30,8 @@ app.post '/', (req, res) ->
         locationFinder.find code, name, (location) ->
             forecastFetcher.getForecast location, (forecast) ->
                 currentDate = new Date()
-                todaysForecast.morning = forecastFetcher.parseForecasts(forecast,currentDate)
-                console.log forecast
-                console.log ' --- '
-                console.log 'MORNING FORECAST:'
+                todaysForecast = forecastFetcher.parseForecasts(forecast,currentDate)
+                console.log 'Forecast Today: '+JSON.stringify(todaysForecast)
                 res.render 'index', { 
                     municipality: req.body.municipality 
                     todaysForecast: todaysForecast

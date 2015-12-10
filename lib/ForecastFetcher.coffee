@@ -61,7 +61,6 @@ module.exports = class ForecastFetcher
             evening: @getPrognosis(eveningMeasurements)
             night: @getPrognosis(nightMeasurements)
         }
-        console.log 'Constructed Prognosis: '+JSON.stringify(prognosis)
         prognosis
 
     getForecasts:(forecastObj,hours,currentDate)=>
@@ -69,7 +68,6 @@ module.exports = class ForecastFetcher
         for forecast in forecastObj.timeSeries
             date = new Date(forecast.validTime)
             if hours.indexOf(date.getHours())>=0 and currentDate.getDate() == date.getDate()
-                console.log 'temperature: '+JSON.stringify(forecast)
                 forecastObject = {
                     date:date,
                 }
@@ -122,17 +120,18 @@ module.exports = class ForecastFetcher
             cloudCover.push(dataObject.cloudCover.value)
             precipitation.push(dataObject.precipitationMean.value)
 
-        prognosis.temperature = @getMeanValueFromArray(temperature)
-        prognosis.windspeed = @getMeanValueFromArray(windspeed)
-        prognosis.cloudCover = @getMeanValueFromArray(cloudCover)
-        prognosis.precipitation = @getMeanValueFromArray(precipitation)
-        prognosis
+        prognosis.temperature = @getMeanValueFromArray(temperature) if temperature.length>0
+        prognosis.windspeed = @getMeanValueFromArray(windspeed) if windspeed.length>0
+        prognosis.cloudCover = @getMeanValueFromArray(cloudCover) if cloudCover.length>0
+        prognosis.precipitation = @getMeanValueFromArray(precipitation) if precipitation.length>0    
+        if prognosis.temperature
+            return prognosis
+        else
+            return null
 
     getMeanValueFromArray:(values)=>
         values.sort( (a,b)-> return a - b )
-
         half = Math.floor(values.length/2)
-
         if(values.length % 2)
             return values[half]
         else
