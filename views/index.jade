@@ -17,6 +17,10 @@ html(lang='sv')
       if municipality
         h1 Väderprognos för #{municipality}
 
+      if todaysForecast.morning.lengt>0
+        for forecast in todaysForecast.morning
+          h3 Time #{forecast.validTime}
+
     script(src='js/lib/jquery/dist/jquery.min.js')
     script(src='js/lib/jquery-ui//jquery-ui.min.js')
     script(src='js/scripts.js')

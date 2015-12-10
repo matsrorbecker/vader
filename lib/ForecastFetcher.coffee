@@ -44,13 +44,14 @@ module.exports = class ForecastFetcher
     getMorningForecast:(forecastObj,currentDate)=>
         morningHours = [5,6,7,8,9]
         morningForecast = []
-        forecasts = forecastObj.timeseries
+        forecasts = forecastObj.timeSeries
         for forecast in forecasts
             date = new Date(forecast.validTime)
-            if morningHours.indexOf(date.getHours())>=0
+            if morningHours.indexOf(date.getHours())>=0 and currentDate.getDate() == date.getDate()
                 morningForecast.push(forecast)
 
-    
+
+
 
 
 
