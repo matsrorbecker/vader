@@ -16,13 +16,32 @@ html(lang='sv')
         p #{error}
       if municipality
         h1 Väderprognos för #{municipality}
-      if todaysForecast
-        
-        if todaysForecast.morning.length>0
-          for forecast in todaysForecast.morning
-            h3 Time #{forecast.date}
-            span Temperature: #{forecast.temperature.value}
-
+        if todaysForecast.morning
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.morning.cloudCover)
+          p.
+            På morgonen får vi #{cloudCoverWord} väder och 
+            en temperatur på omkring #{todaysForecast.morning.temperature} grader.
+        if todaysForecast.forenoon
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.forenoon.cloudCover)
+          p.
+            Under förmiddagen blir det #{cloudCoverWord} väder och temperaturen blir cirka 
+            #{todaysForecast.forenoon.temperature} grader. 
+        if todaysForecast.afternoon
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.afternoon.cloudCover)
+          p.
+            På eftermiddagen väntas #{cloudCoverWord} väder och en temperatur på omkring 
+            #{todaysForecast.forenoon.temperature} grader. 
+        if todaysForecast.evening
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.evening.cloudCover)
+          p.
+            Till kvällen får vi #{cloudCoverWord} väder och en temperatur på cirka 
+            #{todaysForecast.evening.temperature} grader.
+        if todaysForecast.night
+          - var cloudCoverWord = getWordForCloudCover(todaysForecast.night.cloudCover)
+          p.
+            Under natten väntas #{cloudCoverWord} väder och temperaturen väntas ligga på cirka 
+            #{todaysForecast.night.temperature} grader.
+        p Källa: SMHI
     script(src='js/lib/jquery/dist/jquery.min.js')
     script(src='js/lib/jquery-ui//jquery-ui.min.js')
     script(src='js/scripts.js')
